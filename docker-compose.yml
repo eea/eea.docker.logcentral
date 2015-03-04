@@ -1,16 +1,3 @@
-# Description
-#
-# Two web apps: web1 and web2 use a common redis instance
-# they are routed to the web in an nginx server
-
-# Frontend exposing on localhost:8000 generators 1 and 2
-# go to localhost:8000/app1 to see the entry count
-# go to locahlost:8000/app2 to see the entry count
-#
-# To reset the counter for a specific service run:
-# sudo fig run web(1|2) ./common/resetCounter.py
-# notice how the script code is not duplicated but it reads the config in
-# each of the apps
 web:
     build: ./nginx/
     ports:
