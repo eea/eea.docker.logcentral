@@ -1,0 +1,6 @@
+path:
+  home: /elasticsearch/
+  conf: /conf/
+  plugins: /plugins/
+  data: /data/data/
+  logs: /data/log/
