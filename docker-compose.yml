@@ -4,6 +4,7 @@ web:
         - "8000:80"
     links:
         - elasticsearch
+        - kibana
 
 elasticsearch:
     build: ./elasticsearch
@@ -17,3 +18,10 @@ fluentd:
     ports:
         - "5140:5140"
         - "5140:5140/udp"
+
+kibana:
+    image: balsamiq/docker-kibana
+    environment:
+        KIBANA_SECURE: false
+    links:
+        - elasticsearch:es

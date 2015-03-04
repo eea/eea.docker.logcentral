@@ -4,3 +4,8 @@ path:
   plugins: /plugins/
   data: /data/data/
   logs: /data/log/
+
+http:
+  cors:
+    enabled: true
+    allow-origin: "*"
