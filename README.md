@@ -14,5 +14,13 @@ Docker-based centarlized logging app
   searched
 * web: A nginx instance exposing the web interfaces used to _analyze_ logs
 
-* generators(for demo purposes): python applications sending syslog messages for testing
+* demo/ a set of scripts to generate logs to be collected by the system 
+  defined in this repo
 
+## Testing that it works
+
+* ```docker-compose up```
+* ```cd demo/```
+* ```./gen_syslog.py```
+* Go to http://localhost:8000/es/_plugin/head/ and check that logs are
+  collected
