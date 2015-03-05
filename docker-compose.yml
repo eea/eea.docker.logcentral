@@ -17,6 +17,7 @@ fluentd:
     build: ./fluentd
     links:
         - elasticsearch
+        - graylog
     ports:
         - "5140:5140"
         - "5140:5140/udp"

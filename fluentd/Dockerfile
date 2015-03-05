@@ -3,5 +3,9 @@ RUN mkdir /etc/fluent
 ADD fluent.conf /etc/fluent/
 RUN /usr/local/bin/gem install fluent-plugin-record-reformer --no-rdoc --no-ri
 RUN /usr/local/bin/gem install fluent-plugin-elasticsearch --no-rdoc --no-ri
+RUN /usr/local/bin/gem install gelf --no-rdoc --no-ri
+RUN mkdir /etc/fluent/plugin
+ADD out_gelf.rb /etc/fluent/plugin/
 RUN echo "elasticsearch_1 elasticsearch" >> /etc/hosts
+RUN echo "graylog_1 graylog" >> /etc/hosts
 ENTRYPOINT /usr/local/bin/fluentd -c /etc/fluent/fluent.conf
