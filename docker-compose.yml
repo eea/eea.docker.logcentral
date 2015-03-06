@@ -7,6 +7,7 @@ web:
     links:
         - elasticsearch
         - kibana
+        - graylog
 
 elasticsearch:
     build: ./elasticsearch
@@ -28,11 +29,8 @@ kibana:
         KIBANA_SECURE: false
     links:
         - elasticsearch:es
+
 graylog:
     image: sjoerdmulder/graylog2
-    ports:
-        - "9000:9000"
-        - "514:514"
-        - "12201:12201"
     environment:
         - "GRAYLOG2_PASSWORD=password"
