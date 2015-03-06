@@ -36,3 +36,8 @@ graylog:
     image: sjoerdmulder/graylog2
     environment:
         - "GRAYLOG2_PASSWORD=password"
+    ports:
+        - "12201:12201/udp"
+    volumes:
+        - ./data/graylog/mongodb:/data/mongodb
+        - ./data/graylog/elastic:/data/elasticsearch
