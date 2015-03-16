@@ -6,34 +6,17 @@ web:
         - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
         - /etc/localtime:/etc/localtime:ro # Share timezone data with host
     links:
-        - elasticsearch
-        - kibana
         - graylog
-
-elasticsearch:
-    build: ./elasticsearch
-    volumes:
-        - ./data/es:/data
 
 fluentd:
     build: ./fluentd
     links:
-        - elasticsearch
         - graylog
     ports:
         - "5140:5140"
         - "5140:5140/udp"
     volumes:
         - ./data/log:/log # Daily rotated file logs by fluentd
-        - /etc/localtime:/etc/localtime:ro # Share timezone data with host
-
-kibana:
-    image: balsamiq/docker-kibana
-    environment:
-        KIBANA_SECURE: false
-    links:
-        - elasticsearch:es
-    volumes:
         - /etc/localtime:/etc/localtime:ro # Share timezone data with host
 
 graylog:
