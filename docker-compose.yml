@@ -13,7 +13,6 @@ fluentd:
     links:
         - graylog
     ports:
-        - "5140:5140"
         - "5140:5140/udp"
     volumes:
         - ./data/log:/log # Daily rotated file logs by fluentd
