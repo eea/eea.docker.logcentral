@@ -34,7 +34,7 @@ class GELFOutput < BufferedOutput
   end
 
   def format(tag, time, record)
-    gelfentry = { :timestamp => time, :_tag => tag }
+    gelfentry = { :timestamp => time}
 
     record.each_pair do |k,v|
       case k
@@ -43,8 +43,7 @@ class GELFOutput < BufferedOutput
       when 'timestamp' then
         gelfentry[:_timestamp] = v
       when 'host' then
-        if @use_record_host then gelfentry[:host] = v
-        else gelfentry[:_host] = v end
+        gelfentry[:_hostname] = v
       when 'level' then
         case v.downcase
         # emergency and alert aren't supported by gelf-rb
@@ -66,17 +65,19 @@ class GELFOutput < BufferedOutput
         else
           gelfentry[:_msec] = v
         end
-      when 'short_message', 'full_message', 'facility', 'line', 'file' then
-        gelfentry[k] = v
+      when 'message' then
+        gelfentry[:short_message] = v
+      when 'ident' then
+        gelfentry[:_ident] = v
+      when '@log_name' then
+        gelfentry[:_log_name] = v
       else
         gelfentry['_'+k] = v
       end
     end
 
-    if !gelfentry.has_key?('short_message') then
-      gelfentry[:short_message] = record.to_json
-    end
-
+    gelfentry[:_raw_message] = record.to_json
+    
     gelfentry.to_msgpack
   end
 
