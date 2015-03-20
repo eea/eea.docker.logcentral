@@ -9,13 +9,14 @@ web:
         - graylog
 
 fluentd:
-    build: ./fluentd
+    image: eeacms/fluentd
     links:
         - graylog
     ports:
         - "5140:5140/udp"
     volumes:
         - ./data/log:/log # Daily rotated file logs by fluentd
+        - ./fluentd/fluent.conf:/etc/fluent/fluent.conf # Configuration
         - /etc/localtime:/etc/localtime:ro # Share timezone data with host
 
 graylog:
