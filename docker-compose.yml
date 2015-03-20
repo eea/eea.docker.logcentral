@@ -19,9 +19,14 @@ fluentd:
         - /etc/localtime:/etc/localtime:ro # Share timezone data with host
 
 graylog:
-    image: sjoerdmulder/graylog2
+    image: eeacms/graylog2
     environment:
-        - "GRAYLOG2_PASSWORD=password"
+        # Uncomment this on the first setup to give a one time password for
+        # the first configuration.
+        # Restart after setting up Admin permissions for the LDAP users
+        # and commenting back the GRAYLOG_PASSWORD line
+        #- "GRAYLOG_PASSWORD=password"
+        - GRAYLOG_NODE_ID=master
     ports:
         - "12201:12201/udp"
     volumes:
