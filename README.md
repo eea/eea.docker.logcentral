@@ -29,7 +29,10 @@ To access log analysis tools we you can go to:
 
 To log full tracebacks applications have to be set to use a GELFHandler.
 An example of such application can be found in:
-```./demo/gen_gelf_tracebacks.py```
+
+```
+./demo/gen_gelf_tracebacks.py
+```
 
 Note: These tracebacks will only be viewable in the graylog2 interface
 
@@ -76,5 +79,5 @@ Correct update procedure should follow these steps:
 * Remove the backup docker-compose file: ```rm docker-compose-old.yml```
 
 __Note:__ The copy is needed as services can be renamed or removed during
-the git pull, making ```docker-compose down``` ignore the other running
+the git pull, making ```docker-compose stop``` ignore the other running
 services.
