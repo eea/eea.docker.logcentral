@@ -54,6 +54,27 @@ If you want to modify something in the base image follow these steps:
 * Change the ```image: eeacms/graylog2``` or ```image: eeacms/fluentd``` to
   ```build: /path/to/eea.docker.graylog2``` or ```build:
   /path/to/eea.docker.fluentd```
-* Remove existing images ```docker-compose rm```
 * Build the images from the local repo ```docker-compose build```
 * Start the services ```docker-compose up```
+
+## Handling data and updates
+
+__NOTE:__ Do not run ```docker-compose rm``` unless you __know__ what you
+are doing. This will drop the data volume containing the settings and the
+stored logs.
+
+Correct update procedure should follow these steps:
+* If the services in docker-compose changed, create a copy of the
+  docker-compose file: cp docker-compose.yml docker-compose-old.yml
+* Get the latest config from git ```git pull origin master```
+* Pull the latest builds for the given tags: ```docker-compose pull```
+* Stop the services defined in the old docker-compose file:
+  ```docker-compose -f docker-compose-old.yml stop```
+* Optionally backup your data using something similar with
+  ```docker run --volumes-from eeadockerlogcentral_data_1 someimage $BACKUP_COMMAND``` 
+* Start the freshly pulled services: ```docker-compose up```
+* Remove the backup docker-compose file: ```rm docker-compose-old.yml```
+
+__Note:__ The copy is needed as services can be renamed or removed during
+the git pull, making ```docker-compose down``` ignore the other running
+services.

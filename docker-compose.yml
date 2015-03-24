@@ -14,9 +14,10 @@ fluentd:
         - graylog
     ports:
         - "5140:5140/udp"
+    volumes_from:
+        - data
     volumes:
-        - ./data/log:/log # Daily rotated file logs by fluentd
-        - ./fluentd/fluent.conf:/etc/fluent/fluent.conf # Configuration
+        - ./fluentd/fluent.conf:/etc/fluent/fluent.conf:ro # Configuration
         - /etc/localtime:/etc/localtime:ro # Share timezone data with host
 
 graylog:
@@ -30,7 +31,14 @@ graylog:
         - GRAYLOG_NODE_ID=master
     ports:
         - "12201:12201/udp"
+    volumes_from:
+        - data
     volumes:
-        - ./data/graylog/mongodb:/data/mongodb
-        - ./data/graylog/elastic:/data/elasticsearch
         - /etc/localtime:/etc/localtime:ro # Share timezone data with host
+
+data:
+    image: busybox
+    volumes:
+        - /data
+        - /log
+    command: true
