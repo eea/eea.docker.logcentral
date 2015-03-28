@@ -1,4 +1,5 @@
 web:
+    restart: always
     image: nginx
     ports:
         - "80:80"
@@ -9,6 +10,7 @@ web:
         - graylog
 
 fluentd:
+    restart: always
     image: eeacms/fluentd
     links:
         - graylog
@@ -21,6 +23,7 @@ fluentd:
         - /etc/localtime:/etc/localtime:ro # Share timezone data with host
 
 graylog:
+    restart: always
     image: eeacms/graylog2
     environment:
         # Uncomment this on the first setup to give a one time password for
