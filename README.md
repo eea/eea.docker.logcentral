@@ -1,4 +1,4 @@
-Docker-based centarlized logging app
+# Docker-based centralized logging app based on Graylog2
 
 ## Setting up
 
