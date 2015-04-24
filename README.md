@@ -2,9 +2,24 @@ Docker-based centarlized logging app
 
 ## Setting up
 
-* Install docker 
-* Install docker-compose
-* Start the app ```docker-compose up```
+Pre-requisites: install docker and docker-compose.
+
+```
+# git clone https://github.com/eea/eea.docker.logcentral.git
+# cd eea.docker.logcentral
+# cp .dummy-secret.env .secret.env
+```
+Configure the password (one time only) and start up the graylog2 app
+
+```
+# vi .secret.env
+# docker-compose up -d
+```
+
+Verify that the app is running by doing ```docker-compose ps```
+
+Now you can access the graylog2 web interface on port 80 (default):
+* http://localhost/
 
 ## Structure
 
@@ -15,9 +30,6 @@ Docker-based centarlized logging app
 * demo/ a set of scripts to generate logs to be collected by the system 
   defined in this repo
 
-## Interface
-To access log analysis tools we you can go to:
-* http://localhost/ for a graylog2 interface
 
 ## Testing that it works
 
