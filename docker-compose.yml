@@ -25,13 +25,9 @@ fluentd:
 graylog:
     restart: always
     image: eeacms/graylog2
-    environment:
-        # Uncomment this on the first setup to give a one time password for
-        # the first configuration.
-        # Restart after setting up Admin permissions for the LDAP users
-        # and commenting back the GRAYLOG_PASSWORD line
-        #- "GRAYLOG_PASSWORD=password"
-        - GRAYLOG_NODE_ID=master
+    env_file:
+        - .secret.env
+        - master.env
     ports:
         - "12201:12201/udp"
     volumes_from:
