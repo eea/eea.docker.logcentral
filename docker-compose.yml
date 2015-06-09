@@ -41,9 +41,11 @@ graylog:
 
 rabbitmq:
     restart: always
-    image: rabbitmq:3-management
+    build: rabbitmq
     ports:
         - "5672:5672"
+    env_file:
+        - .secret.rabbitmq
     environment:
         - RABBITMQ_NODENAME=rabbit-logs
     hostname: rabbit-logs
@@ -57,6 +59,8 @@ rabbitmqconfig:
         - ./rabbitconfig/config.sh:/config.sh:ro
     links:
         - rabbitmq
+    env_file:
+        - .secret.rabbitmq
     environment:
         - BROKER=rabbitmq
     command: /config.sh
