@@ -9,10 +9,14 @@ Pre-requisites: install docker and docker-compose.
 # cd eea.docker.logcentral
 # cp .dummy-secret.env .secret.env
 ```
-Configure the password (one time only) and start up the graylog2 app
+Configure the passwords (one time only) and start up the graylog2 app
 
 ```
+# Configure Graylog password
 # vi .secret.env
+# Configure Broker authentication credentials
+# vi .secret.rabbitmq
+# Start Graylog2 app
 # docker-compose up -d
 ```
 
@@ -20,6 +24,28 @@ Verify that the app is running by doing ```docker-compose ps```
 
 Now you can access the graylog2 web interface on port 80 (default):
 * http://localhost/
+
+Add a new input:
+```
+* Check global input
+* title - your chioice e.g. "GELF AMQP"
+* queue - log-messages (mandatory)
+* username - USER from .secret.rabbitmq
+* prefetch count - leave the default
+* broker hostname - rabbitmq (name of the service in docker-compose.yml)
+* broker virtualhost - / (encoded as "%2F" in the test script)
+* broker port 5672
+* password - PASS from .secret.rabbitmq
+* ... defaults
+* exchange - logging.gelf (mandatory)
+```
+
+Now you can log in RabbitMQ. Example URI:
+```
+amqp://{user}:{password}@{host}:5672/%2F (for user and password use values from .secret.rabbitmq)
+```
+If logging does not work just do a ```docker-compose run --rm rabbitmqconfig``` It will recreate the rabbitmq config so things get logged
+
 
 ## Structure
 
