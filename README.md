@@ -25,7 +25,8 @@ Verify that the app is running by doing ```docker-compose ps```
 Now you can access the graylog2 web interface on port 80 (default):
 * http://localhost/
 
-Add a new input:
+## How to add a new GELF AMQP input
+
 ```
 * Check global input
 * title - your chioice e.g. "GELF AMQP"
