@@ -120,3 +120,8 @@ Correct update procedure should follow these steps:
 __Note:__ The copy is needed as services can be renamed or removed during
 the git pull, making ```docker-compose stop``` ignore the other running
 services.
+
+## Common issues
+
+Problem: After graylog container is restart it will stop and restart over and over again.
+Fix: Enter graylog container and delete /opt/graylog2-web-interface/RUNNING_PID file
