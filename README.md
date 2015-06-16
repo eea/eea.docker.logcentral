@@ -123,5 +123,6 @@ services.
 
 ## Common issues
 
-Problem: After graylog container is restart it will stop and restart over and over again.
-Fix: Enter graylog container and delete /opt/graylog2-web-interface/RUNNING_PID file
+__Problem:__ After graylog container is restart it will stop and restart over and over again.
+
+__Fix:__ Enter graylog container and delete /opt/graylog2-web-interface/RUNNING_PID file
