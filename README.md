@@ -24,10 +24,30 @@ Verify that the app is running by doing ```docker-compose ps```
 
 Now you can access the graylog2 web interface on port 80 (default):
 * http://localhost/
+ 
+## How to upgrade
+
+```
+# docker-compose stop
+# docker-compose pull
+# docker-compose rm -v fluentd graylog rabbitmq rabbitmqconfig web
+# docker-compose up -d --x-smart-recreate
+```
+
+## How to enable LDAP security
+```
+# Go to System > Users > Configure LDAP
+* LDAP Server Address - ldap2.eionet.europa.eu : 389 : StartTLS
+* Search Base DN - ou=Users,o=EIONET,l=Europe
+* User Search Pattern - (&(objectClass=inetOrgPerson)(uid={0}))
+* Display Name attribute - cn
+* Default permission group - Reader
+```
 
 ## How to add a new GELF AMQP input
 
 ```
+# Go to System > Input > GELF AMQP > Launch new input
 * Check global input
 * title - your chioice e.g. "GELF AMQP"
 * queue - log-messages (mandatory)
@@ -53,7 +73,6 @@ If logging does not work just do a ```docker-compose run --rm rabbitmqconfig``` 
 * fluentd: A fluentd _log collector_ instance listening for syslog messages
 * web: A nginx instance exposing the web interfaces used to _analyze_ logs
 * graylog: A graylog2 instance used for _storing_ and _analyzing_ logs
-
 * demo/ a set of scripts to generate logs to be collected by the system 
   defined in this repo
 
