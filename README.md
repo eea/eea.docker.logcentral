@@ -37,7 +37,7 @@ Now you can access the graylog2 web interface on port 80 (default):
 ## How to enable LDAP security
 ```
 # Go to System > Users > Configure LDAP
-* LDAP Server Address - ldap2.eionet.europa.eu : 389 : StartTLS
+* LDAP Server Address - ldap2.eionet.europa.eu : 389 : StartTLS # NOTE! use the nearest ldap, e.g. ldap4.eionet.europa.eu if you deploy on the cloud.
 * Search Base DN - ou=Users,o=EIONET,l=Europe
 * User Search Pattern - (&(objectClass=inetOrgPerson)(uid={0}))
 * Display Name attribute - cn
