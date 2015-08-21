@@ -38,7 +38,6 @@ graylog:
     volumes:
         - /etc/localtime:/etc/localtime:ro # Share timezone data with host
 
-
 rabbitmq:
     restart: always
     build: rabbitmq
@@ -49,6 +48,8 @@ rabbitmq:
     environment:
         - RABBITMQ_NODENAME=rabbit-logs
     hostname: rabbit-logs
+    volumes:
+        - /etc/localtime:/etc/localtime:ro # Share timezone data with host
 
 # Run this one-time only in order to setup rabbitmq
 # Do the configuration from container in order not to expose
