@@ -44,6 +44,14 @@ Now you can access the graylog2 web interface on port 80 (default):
 * Default permission group - Reader
 ```
 
+## How to set user the time zone
+
+Since Graylog internally processes and stores messages in the UTC timezone, it is important to set the correct timezone for each user.
+
+Even though the system defaults are often enough to display correct times, in case your team is spread across different timezones, each user can be assigned and change their respective timezone setting. You can find the current timezone settings for the various components on the System -> Overview page of your Graylog web interface.
+
+To change your Timezone, go to System -> Users and edit the user's preferences
+
 ## How to add a new GELF AMQP input
 
 ```
