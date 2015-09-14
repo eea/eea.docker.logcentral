@@ -30,8 +30,7 @@ Now you can access the graylog2 web interface on port 80 (default):
 ```
 # docker-compose stop
 # docker-compose pull
-# docker-compose rm -v fluentd graylog rabbitmq rabbitmqconfig web
-# docker-compose up -d --x-smart-recreate
+# docker-compose up -d 
 ```
 
 ## How to enable LDAP security
