@@ -24,7 +24,7 @@ fluentd:
 
 graylog:
     restart: always
-    image: eeacms/graylog2
+    image: eeacms/graylog2:1.2.1
     env_file:
         - .secret.env
         - master.env
