@@ -51,29 +51,15 @@ Even though the system defaults are often enough to display correct times, in ca
 
 To change your Timezone, go to System -> Users and edit the user's preferences
 
-## How to add a new GELF AMQP input
+## How to add a new GELF UDP input
 
 ```
-# Go to System > Input > GELF AMQP > Launch new input
+# Go to System > Input > GELF UDP > Launch new input
 * Check global input
-* title - your chioice e.g. "GELF AMQP"
-* queue - log-messages (mandatory)
-* username - USER from .secret.rabbitmq
-* prefetch count - leave the default
-* broker hostname - rabbitmq (name of the service in docker-compose.yml)
-* broker virtualhost - / (encoded as "%2F" in the test script)
-* broker port 5672
-* password - PASS from .secret.rabbitmq
-* ... defaults
-* exchange - logging.gelf (mandatory)
-```
-
-Now you can log in RabbitMQ. Example URI:
-```
-amqp://{user}:{password}@{host}:5672/%2F (for user and password use values from .secret.rabbitmq)
-```
-If logging does not work just do a ```docker-compose run --rm rabbitmqconfig``` It will recreate the rabbitmq config so things get logged
-
+* title - your chioice e.g. "GELF UDP"
+* bind address - leave the default
+* port - 12201
+* receive buffer size - leave the default
 
 ## Structure
 
