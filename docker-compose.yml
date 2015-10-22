@@ -28,47 +28,17 @@ graylog:
     env_file:
         - .secret.env
         - master.env
-    # Comment this out in order to send GELF messages for a GELF input
-    #ports: 
-    #    - "12201:12201/udp"
+    ports: 
+        - "12201:12201/udp"
+        - "1514:1514/tcp"
     volumes_from:
         - data
-    links:
-        - rabbitmq
     volumes:
         - /etc/localtime:/etc/localtime:ro # Share timezone data with host
-
-rabbitmq:
-    restart: always
-    build: rabbitmq
-    ports:
-        - "5672:5672"
-    env_file:
-        - .secret.rabbitmq
-    environment:
-        - RABBITMQ_NODENAME=rabbit-logs
-    hostname: rabbit-logs
-    volumes:
-        - /etc/localtime:/etc/localtime:ro # Share timezone data with host
-
-# Run this one-time only in order to setup rabbitmq
-# Do the configuration from container in order not to expose
-# the configuration REST API globally
-rabbitmqconfig:
-    image: radial/busyboxplus:curl
-    volumes:
-        - ./rabbitconfig/config.sh:/config.sh:ro
-    links:
-        - rabbitmq
-    env_file:
-        - .secret.rabbitmq
-    environment:
-        - BROKER=rabbitmq
-    command: /config.sh
 
 data:
     image: busybox
     volumes:
         - /data
         - /log
-    command: true
+    command: "true"
