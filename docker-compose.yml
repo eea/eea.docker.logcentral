@@ -1,6 +1,6 @@
 web:
     restart: always
-    image: nginx
+    image: docker.io/nginx
     ports:
         - "80:80"
     volumes:
@@ -11,7 +11,7 @@ web:
 
 fluentd:
     restart: always
-    image: eeacms/fluentd
+    image: docker.io/eeacms/fluentd
     links:
         - graylog
     ports:
@@ -24,7 +24,7 @@ fluentd:
 
 graylog:
     restart: always
-    image: eeacms/graylog2:1.2.1
+    image: docker.io/eeacms/graylog2:1.2.1
     env_file:
         - .secret.env
         - master.env
@@ -37,7 +37,7 @@ graylog:
         - /etc/localtime:/etc/localtime:ro # Share timezone data with host
 
 data:
-    image: busybox
+    image: docker.io/busybox
     volumes:
         - /data
         - /log
