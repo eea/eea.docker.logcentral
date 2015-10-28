@@ -24,21 +24,47 @@ fluentd:
 
 graylog:
     restart: always
-    image: docker.io/eeacms/graylog2:1.2.1
+    image: docker.io/eeacms/graylog2:1.2.1-1
     env_file:
         - .secret.env
         - master.env
     ports: 
         - "12201:12201/udp"
         - "1514:1514/tcp"
+    links:
+        - "elasticsearch:elasticsearch.service"
+        - "mongodb:mongodb.service"
+
     volumes_from:
         - data
     volumes:
         - /etc/localtime:/etc/localtime:ro # Share timezone data with host
 
+mongodb:
+    image: docker.io/mongo:3.0.7
+    restart: always
+    command: --smallfiles --quiet --logappend --logpath=/logs/mongodb/mongodb.log --dbpath=/data/mongodb
+    volumes_from:
+        - data
+
+elasticsearch:
+    image: docker.io/elasticsearch:1.7.3
+    restart: always
+    volumes_from:
+        - data
+    command: -Des.cluster.name=graylog2 -Des.path.data=/data/elasticsearch -Des.path.logs=/logs/elasticsearch/
+
+setup:
+    image: docker.io/alpine
+    volumes_from:
+        - data
+    volumes:
+        - ./setup/setup.sh:/setup.sh:ro
+    command: /setup.sh
+
 data:
     image: docker.io/busybox
     volumes:
         - /data
-        - /log
-    command: "true"
+        - /logs
+    command: "/bin/true"
