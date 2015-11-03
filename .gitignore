@@ -2,3 +2,5 @@ data/
 demo/sandbox
 *.pyc
 .secret.env
+.postfix.secret
+

@@ -34,11 +34,21 @@ graylog:
     links:
         - "elasticsearch:elasticsearch.service"
         - "mongodb:mongodb.service"
+        - "postfix"
 
     volumes_from:
         - data
     volumes:
         - /etc/localtime:/etc/localtime:ro # Share timezone data with host
+
+
+postfix:
+    restart: always
+    image: eeacms/postfix:eionet
+    volumes:
+        - /etc/localtime:/etc/localtime:ro
+    env_file:
+        - .postfix.secret
 
 mongodb:
     image: docker.io/mongo:3.0.7
