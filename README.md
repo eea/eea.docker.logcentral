@@ -1,13 +1,21 @@
 # Docker-based centralized logging app based on Graylog2
 
+### Prerequisites
+
+- Install [Docker](https://docs.docker.com/installation/)
+- Install [Compose](https://docs.docker.com/compose/install/)
+
 ## Setting up
 
 Pre-requisites: install docker and docker-compose.
+
+Clone the repository
 
 ```
 # git clone https://github.com/eea/eea.docker.logcentral.git
 # cd eea.docker.logcentral
 # cp .dummy-secret.env .secret.env
+# cp .postfix.secret.example .postfix.secret
 ```
 Configure the passwords (one time only) and start up the graylog2 app
 
@@ -16,6 +24,8 @@ Configure the passwords (one time only) and start up the graylog2 app
 # vi .secret.env
 # Configure Broker authentication credentials
 # vi .secret.rabbitmq
+# edit email configuration
+# vi .postfix.secret
 # Start Graylog2 app
 # docker-compose up -d
 ```
