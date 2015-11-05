@@ -27,7 +27,7 @@ graylog:
     image: docker.io/eeacms/graylog2:1.2.1-2
     env_file:
         - .secret.env
-        - .graylog_email.secret.env
+        - .graylog_email.secret
         - master.env
     ports: 
         - "12201:12201/udp"
