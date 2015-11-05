@@ -16,6 +16,7 @@ Clone the repository
 # cd eea.docker.logcentral
 # cp .dummy-secret.env .secret.env
 # cp .postfix.secret.example .postfix.secret
+# cp .graylog_email.secret.example .graylog_email.secret
 ```
 Configure the passwords (one time only) and start up the graylog2 app
 
@@ -26,6 +27,8 @@ Configure the passwords (one time only) and start up the graylog2 app
 # vi .secret.rabbitmq
 # edit email configuration
 # vi .postfix.secret
+# edit graylog email transport configuration
+# vi .graylog_email.secret
 # Start Graylog2 app
 # docker-compose up -d
 ```

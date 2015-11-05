@@ -24,9 +24,10 @@ fluentd:
 
 graylog:
     restart: always
-    image: docker.io/eeacms/graylog2:1.2.1-1
+    image: docker.io/eeacms/graylog2:1.2.1-2
     env_file:
         - .secret.env
+        - .graylog_email.secret.env
         - master.env
     ports: 
         - "12201:12201/udp"
@@ -34,8 +35,7 @@ graylog:
     links:
         - "elasticsearch:elasticsearch.service"
         - "mongodb:mongodb.service"
-        - "postfix"
-
+        - "postfix:postfix.service"
     volumes_from:
         - data
     volumes:
