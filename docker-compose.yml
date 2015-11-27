@@ -1,15 +1,3 @@
-monit:
-  image: vimagick/monit
-  volumes:
-    - ./monit:/etc/monit
-  pid: host
-  net: host
-  restart: always
-  ports:
-       - "2812:2812"
-  links:
-       - web
-
 web:
     restart: always
     image: docker.io/nginx
@@ -36,7 +24,7 @@ fluentd:
 
 graylog:
     restart: always
-    image: docker.io/eeacms/graylog2:1.2.2
+    image: docker.io/eeacms/graylog2:latest
     hostname: graylog.service
     env_file:
         - .secret.env
@@ -44,6 +32,7 @@ graylog:
     ports: 
         - "12201:12201/udp"
         - "1514:1514/tcp"
+        - "2812:2812"
     links:
         - "elasticsearch:elasticsearch.service"
         - "mongodb:mongodb.service"
@@ -52,6 +41,7 @@ graylog:
         - data
     volumes:
         - /etc/localtime:/etc/localtime:ro # Share timezone data with host
+        - ./monit/conf.d:/etc/monit/conf.d
 
 
 postfix:
