@@ -4,8 +4,8 @@ web:
     ports:
         - "80:80"
     volumes:
-        - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-        - /etc/localtime:/etc/localtime:ro # Share timezone data with host
+        - ./nginx/nginx.conf:/etc/nginx/nginx.conf:z
+        - /etc/localtime:/etc/localtime:z # Share timezone data with host
     links:
         - graylog
 
@@ -19,8 +19,8 @@ fluentd:
     volumes_from:
         - data
     volumes:
-        - ./fluentd/fluent.conf:/etc/fluent/fluent.conf:ro # Configuration
-        - /etc/localtime:/etc/localtime:ro # Share timezone data with host
+        - ./fluentd/fluent.conf:/etc/fluent/fluent.conf:z # Configuration
+        - /etc/localtime:/etc/localtime:z # Share timezone data with host
 
 graylog:
     restart: always
@@ -40,15 +40,15 @@ graylog:
     volumes_from:
         - data
     volumes:
-        - /etc/localtime:/etc/localtime:ro # Share timezone data with host
-        - ./monit/conf.d:/etc/monit/conf.d
+        - /etc/localtime:/etc/localtime:z # Share timezone data with host
+        - ./monit/conf.d:/etc/monit/conf.d:z
 
 
 postfix:
     restart: always
     image: eeacms/postfix:eionet
     volumes:
-        - /etc/localtime:/etc/localtime:ro
+        - /etc/localtime:/etc/localtime:z
     env_file:
         - .postfix.secret
 
@@ -71,7 +71,7 @@ setup:
     volumes_from:
         - data
     volumes:
-        - ./setup/setup.sh:/setup.sh:ro
+        - ./setup/setup.sh:/setup.sh:z
     command: /setup.sh
 
 data:
