@@ -24,7 +24,7 @@ fluentd:
 
 graylog:
     restart: always
-    image: docker.io/eeacms/graylog2:latest
+    image: docker.io/eeacms/graylog2:1.2.2
     hostname: graylog.service
     env_file:
         - .secret.env
