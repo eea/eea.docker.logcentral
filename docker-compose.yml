@@ -40,8 +40,8 @@ graylog:
     volumes_from:
         - data
     volumes:
+        - ./config/graylogctl:/opt/graylog2-server/bin/graylogctl:z
         - /etc/localtime:/etc/localtime:ro
-        - ./config/graylog-server.conf:/conf/graylog-server.conf:z
 
 
 postfix:
