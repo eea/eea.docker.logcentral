@@ -4,7 +4,7 @@ web:
     ports:
         - "80:80"
     volumes:
-        - ./nginx/nginx.conf:/etc/nginx/nginx.conf:z
+        - ./config/nginx.conf:/etc/nginx/nginx.conf:z
         - /etc/localtime:/etc/localtime:ro
     links:
         - graylog
@@ -19,7 +19,7 @@ fluentd:
     volumes_from:
         - data
     volumes:
-        - ./fluentd/fluent.conf:/etc/fluent/fluent.conf:z # Configuration
+        - ./config/fluent.conf:/etc/fluent/fluent.conf:z # Configuration
         - /etc/localtime:/etc/localtime:ro
 
 graylog:
@@ -41,6 +41,7 @@ graylog:
         - data
     volumes:
         - /etc/localtime:/etc/localtime:ro
+        - ./config/graylog-server.conf:/conf/graylog-server.conf:z
 
 
 postfix:
@@ -65,6 +66,7 @@ elasticsearch:
     restart: always
     volumes:
         - /etc/localtime:/etc/localtime:ro
+        - ./config/elasticsearch.yml:/etc/elasticsearch/elasticsearch.yml:z
     volumes_from:
         - data
     command: -Des.cluster.name=graylog2 -Des.path.data=/data/elasticsearch -Des.path.logs=/logs/elasticsearch/
