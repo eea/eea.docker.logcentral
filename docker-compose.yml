@@ -41,7 +41,6 @@ graylog:
         - data
     volumes:
         - /etc/localtime:/etc/localtime:ro
-        - ./monit/conf.d:/etc/monit/conf.d:z
 
 
 postfix:
@@ -69,6 +68,8 @@ elasticsearch:
     volumes_from:
         - data
     command: -Des.cluster.name=graylog2 -Des.path.data=/data/elasticsearch -Des.path.logs=/logs/elasticsearch/
+    env_file:
+        - elastic.env
 
 setup:
     image: docker.io/alpine
