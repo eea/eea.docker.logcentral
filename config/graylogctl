@@ -49,10 +49,10 @@ GRAYLOGCTL_DIR=${GRAYLOGCTL_DIR:=$(dirname "$GRAYLOGCTL")}
 GRAYLOG_SERVER_JAR=${GRAYLOG_SERVER_JAR:=graylog.jar}
 GRAYLOG_CONF=${GRAYLOG_CONF:=/etc/graylog/server/server.conf}
 GRAYLOG_PID=${GRAYLOG_PID:=/tmp/graylog.pid}
-GRAYLOG_HEAP_SIZE=${GRAYLOG_HEAP_SIZE:=$(echo "-Xms1g -Xmx1g")}
+GRAYLOG_HEAP_SIZE=${GRAYLOG_HEAP_SIZE:=$(echo "-Xms1g -Xmx1g -XX:PermSize=128m -XX:MaxPermSize=256m")}
 LOG_FILE=${LOG_FILE:=log/graylog-server.log}
 LOG4J=${LOG4J:=}
-DEFAULT_JAVA_OPTS="-Djava.library.path=${GRAYLOGCTL_DIR}/../lib/sigar ${GRAYLOG_HEAP_SIZE} -XX:NewRatio=1 -XX:PermSize=128m -XX:MaxPermSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
+DEFAULT_JAVA_OPTS="-Djava.library.path=${GRAYLOGCTL_DIR}/../lib/sigar ${GRAYLOG_HEAP_SIZE} -XX:NewRatio=1 -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
 JAVA_OPTS="${JAVA_OPTS:="$DEFAULT_JAVA_OPTS"}"
 
 start() {
