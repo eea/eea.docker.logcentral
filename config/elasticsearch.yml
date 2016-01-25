@@ -386,4 +386,5 @@
 
 cluster.name: graylog2
 script.disable_dynamic: true
-
+discovery.zen.ping.multicast.enabled: false
+bootstrap.mlockall: true
