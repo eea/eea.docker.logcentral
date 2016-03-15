@@ -53,7 +53,7 @@ postfix:
         - .postfix.secret
 
 mongodb:
-    image: docker.io/mongo:3.0.9
+    image: docker.io/mongo:3.0.10
     restart: always
     command: --smallfiles --quiet --logappend --logpath=/logs/mongodb/mongodb.log --dbpath=/data/mongodb
     volumes:
