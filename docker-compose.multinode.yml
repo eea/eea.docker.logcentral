@@ -3,24 +3,28 @@ web:
     image: docker.io/nginx
     ports:
         - "80:80"
+        - "1514:1514/tcp"
+        - "2812:2812"
     volumes:
         - ./config/nginx.multinode.conf:/etc/nginx/nginx.conf:z
         - /etc/localtime:/etc/localtime:ro
     links:
         - graylog-web
+        - graylog-master
+        - graylog-client
 
 fluentd:
     restart: always
     image: docker.io/eeacms/fluentd
     links:
-        - graylog-master
-        - graylog-client
+        - web
+
     ports:
         - "5140:5140/udp"
     volumes_from:
         - data
     volumes:
-        - ./config/fluent.conf:/etc/fluent/fluent.conf:z # Configuration
+        - ./config/fluent.multinode.conf:/etc/fluent/fluent.conf:z # Configuration
         - /etc/localtime:/etc/localtime:ro
 
 graylog-master:
@@ -35,6 +39,8 @@ graylog-master:
         - GRAYLOG_MASTER=true
         - GRAYLOG_HOSTNAME=graylogmaster
         - GRAYLOG_NODE_ID=master
+    ports:
+        - "12201:12201/udp"
     links:
         - "elasticsearch:elasticsearch.service"
         - "mongodb:mongodb.service"
@@ -44,10 +50,6 @@ graylog-master:
     volumes:
         - ./config/graylogctl:/opt/graylog2-server/bin/graylogctl:z
         - /etc/localtime:/etc/localtime:ro
-    ports:
-        - "12201:12201/udp"
-        - "1514:1514/tcp"
-        - "2812:2812"
 
 graylog-client:
     restart: always
@@ -70,6 +72,8 @@ graylog-client:
     volumes:
         - ./config/graylogctl:/opt/graylog2-server/bin/graylogctl:z
         - /etc/localtime:/etc/localtime:ro
+    ports:
+        - "12202:12201/udp"
 
 graylog-web:
     restart: always
