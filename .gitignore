@@ -3,3 +3,4 @@ demo/sandbox
 *.pyc
 .secret.env
 *.secret
+docker-compose.yml
