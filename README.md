@@ -81,13 +81,41 @@ graylog-client-<progressive number>:
         - /etc/localtime:/etc/localtime:ro
 ```
  
-__2__. Register the new stack into ```GRAYLOG_SERVER_URIS``` of [graylog-web](docker-compose.multinode.yml#L88):
+__2__. Register the new stack into [graylog-web](docker-compose.multinode.yml#L82-101):
+
+Add the new stack into Graylog server uris
 
 ```
 GRAYLOG_SERVER_URIS=http://graylogmaster:12900/,http://graylogclient:12900/,http://graylogclient<progressive_number>:12900/
 ```
 
+Add the new stack into links parts:
+
+```
+...
+links:
+    - "elasticsearch:elasticsearch.service"
+    - "mongodb:mongodb.service"
+    - "postfix:postfix.service"
+    - "graylog-master:graylogmaster.service"
+    - "graylog-client-1:graylogclient1.service"
+    - "graylog-client-<progressive_number>:graylogclient<progressive_number>.service"
+...
+```
+
 __3__. Add the new node into load balancer
+
+Register the new stack into [load balancer](docker-compose.multinode.yml#L13-25):
+```
+...
+links:
+    - graylog-master
+    - graylog-client-1
+    - graylog-client-<progressive_number>
+...
+```
+
+Configure nginx configuration
 
 [udp](config/nginx.balancer.conf#L#L8-L11) load balancer configuration
 ```
