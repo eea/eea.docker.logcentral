@@ -48,7 +48,6 @@ graylog-master:
         - ENABLED_SERVICES=graylog-server
         - GRAYLOG_MASTER=true
         - GRAYLOG_HOSTNAME=graylogmaster
-        - GRAYLOG_NODE_ID=master
     links:
         - "elasticsearch:elasticsearch.service"
         - "mongodb:mongodb.service"
@@ -70,7 +69,6 @@ graylog-client:
         - ENABLED_SERVICES=graylog-server
         - GRAYLOG_MASTER=false
         - GRAYLOG_HOSTNAME=graylogclient
-        - GRAYLOG_NODE_ID=client
     links:
         - "elasticsearch:elasticsearch.service"
         - "mongodb:mongodb.service"
