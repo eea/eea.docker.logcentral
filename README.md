@@ -56,7 +56,7 @@ docker-compose up -d
 
 To add another node follow the below steps.
 
-1. Edit the "docker-compose.multinode.yml" file and add another slave node coping this code:
+__1__. Edit the "docker-compose.multinode.yml" file and add another slave node coping this code:
 
 ```
 graylog-client-<progressive number>:
@@ -81,13 +81,13 @@ graylog-client-<progressive number>:
         - /etc/localtime:/etc/localtime:ro
 ```
  
-2. Register the new stack into ```GRAYLOG_SERVER_URIS``` of [graylog-web](docker-compose.multinode.yml#L88):
+__2__. Register the new stack into ```GRAYLOG_SERVER_URIS``` of [graylog-web](docker-compose.multinode.yml#L88):
 
 ```
 GRAYLOG_SERVER_URIS=http://graylogmaster:12900/,http://graylogclient:12900/,graylogclient<progressive_number>:12900/
 ```
 
-3. Add the new node into load balancer
+__3__. Add the new node into load balancer
 
 [udp](config/nginx.balancer.conf#L#L8-L11) load balancer configuration
 ```
@@ -106,7 +106,7 @@ upstream graylogserverstcp {
 }
 ```
 
-4. After you can stop and restart services
+__4__. After you can stop and restart services
 
 ```
 docker-compose stop
