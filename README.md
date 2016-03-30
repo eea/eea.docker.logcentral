@@ -84,7 +84,7 @@ graylog-client-<progressive number>:
 __2__. Register the new stack into ```GRAYLOG_SERVER_URIS``` of [graylog-web](docker-compose.multinode.yml#L88):
 
 ```
-GRAYLOG_SERVER_URIS=http://graylogmaster:12900/,http://graylogclient:12900/,graylogclient<progressive_number>:12900/
+GRAYLOG_SERVER_URIS=http://graylogmaster:12900/,http://graylogclient:12900/,http://graylogclient<progressive_number>:12900/
 ```
 
 __3__. Add the new node into load balancer
