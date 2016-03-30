@@ -56,7 +56,7 @@ docker-compose up -d
 
 To add another node follow the below steps.
 
-__1__. Edit the "docker-compose.multinode.yml" file and add another slave node coping this code:
+__1__. Edit the "[docker-compose.multinode.yml](docker-compose.multinode.yml)" file and add another slave node coping this code:
 
 ```
 graylog-client-<progressive number>:
