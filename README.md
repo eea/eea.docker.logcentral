@@ -12,22 +12,32 @@ Pre-requisites: install docker and docker-compose.
 Clone the repository
 
 ```
-# git clone https://github.com/eea/eea.docker.logcentral.git
-# cd eea.docker.logcentral
-# cp .dummy-secret.env .secret.env
-# cp .postfix.secret.example .postfix.secret
+git clone https://github.com/eea/eea.docker.logcentral.git
+cd eea.docker.logcentral
+cp .dummy-secret.env .secret.env
+cp .postfix.secret.example .postfix.secret
 ```
 Configure the passwords (one time only) and start up the graylog2 app
 
 ```
 # Configure Graylog password
-# vi .secret.env
+vi .secret.env
 # edit email configuration
-# vi .postfix.secret
+vi .postfix.secret
 # edit graylog email transport configuration
-# vi graylog.env
+vi graylog.env
+```
+
+Choose the docker compose to run
+
+* docker-compose.singlenode.yml: to start graylog with a single node
+* docker-compose.multinode.yml: to start graylog with more nodes
+
+```
+# make a link of choosed docker-compose
+ln -sf <docker-compose choosed> docker-compose.yml
 # Start Graylog2 app
-# docker-compose up -d
+docker-compose up -d
 ```
 
 Verify that the app is running by doing ```docker-compose ps```
@@ -38,9 +48,69 @@ Now you can access the graylog2 web interface on port 80 (default):
 ## How to upgrade
 
 ```
-# docker-compose stop
-# docker-compose pull
-# docker-compose up -d 
+docker-compose stop
+docker-compose pull
+docker-compose up -d 
+```
+## How to add another node
+
+To add another node follow the below steps.
+
+1. Edit the "docker-compose.multinode.yml" file and add another slave node coping this code:
+
+```
+graylog-client-<progressive number>:
+    restart: always
+    image: docker.io/eeacms/graylog2:<latest tag>
+    hostname: graylogclient<progressive number>.service
+    env_file:
+        - .secret.env
+        - graylog.env
+    environment:
+        - ENABLED_SERVICES=graylog-server
+        - GRAYLOG_MASTER=false
+        - GRAYLOG_HOSTNAME=graylogclient<progressive_number>
+    links:
+        - "elasticsearch:elasticsearch.service"
+        - "mongodb:mongodb.service"
+        - "postfix:postfix.service"
+    volumes_from:
+        - data
+    volumes:
+        - ./config/graylogctl:/opt/graylog2-server/bin/graylogctl:z
+        - /etc/localtime:/etc/localtime:ro
+```
+ 
+2. Register the new stack into ```GRAYLOG_SERVER_URIS``` of [graylog-web](docker-compose.multinode.yml#L88):
+
+```
+GRAYLOG_SERVER_URIS=http://graylogmaster:12900/,http://graylogclient:12900/,graylogclient<progressive_number>:12900/
+```
+
+3. Add the new node into load balancer
+
+[udp](config/nginx.balancer.conf#L#L8-L11) load balancer configuration
+```
+upstream graylogserversudp {
+    server graylogmaster:12201;
+    server graylogclient:12201;
+    server graylogclient<progressive_number>:12201;
+}
+```
+[tcp](config/nginx.balancer.conf#L#L18-L21) load balancer configuration
+```
+upstream graylogserverstcp {
+    server graylogmaster:1514;
+    server graylogclient:1514;
+    server graylogclient<progressive_number>:1514;
+}
+```
+
+4. After you can stop and restart services
+
+```
+docker-compose stop
+docker-compose up -d
 ```
 
 ## How to enable LDAP security
