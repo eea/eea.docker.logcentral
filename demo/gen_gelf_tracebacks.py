@@ -17,9 +17,9 @@ if __name__ == '__main__':
     # Add the GELF handler to the root loggers so all new loggers will
     # automatically use it when logging exceptions
     root_logger.addHandler(gelf_handler)
-    
+
     logger = []
-    
+
     for n in range(20):
         log = logging.getLogger('logger_%s' % n)
         log.setLevel(logging.DEBUG)
@@ -28,16 +28,16 @@ if __name__ == '__main__':
     my_dict = {}
 
     while True:
-        key = random.randint(10, 2000)
-        try:
-            print my_dict[key]
-        except KeyError as e:
-            i = 0
-            for log in logger:
+        i = 0
+        for log in logger:
+            key = random.randint(10, 2000)
+            try:
+                print my_dict[key]
+            except KeyError as e:
                 if i % 2 == 0:
-                   log.debug('Had this key error %d', key, exc_info=1)
+                    log.debug('Had this key error %d', key, exc_info=1)
                 else:
-                   log.info('Handlers are inherited from the root logger')
-                i =  i + 1
-                print "logged directly to graylog2"
+                    log.info('Handlers are inherited from the root logger')
+            i =  i + 1
+        print "logged directly to graylog2"
         time.sleep(2)
