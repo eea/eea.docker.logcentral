@@ -20,7 +20,7 @@ if __name__ == '__main__':
     
     logger = []
     
-    for n in range(2000):
+    for n in range(20):
         log = logging.getLogger('logger_%s' % n)
         log.setLevel(logging.DEBUG)
         logger.append(log)
