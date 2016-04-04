@@ -168,6 +168,7 @@ To change your Timezone, go to System -> Users and edit the user's preferences
 * bind address - leave the default
 * port - 12201
 * receive buffer size - leave the default
+```
 
 ## Structure
 
