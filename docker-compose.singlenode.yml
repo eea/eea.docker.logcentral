@@ -1,6 +1,6 @@
 web:
     restart: always
-    image: docker.io/nginx
+    image: docker.io/nginx:alpine
     ports:
         - "80:80"
     volumes:
