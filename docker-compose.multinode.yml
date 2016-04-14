@@ -37,7 +37,7 @@ fluentd:
 
 graylog-master:
     restart: always
-    image: docker.io/eeacms/graylog2:1.3.4
+    image: docker.io/eeacms/graylog2:1.3.4.1
     hostname: graylogmaster.service
     env_file:
         - .secret.env
@@ -58,7 +58,7 @@ graylog-master:
 
 graylog-client-1:
     restart: always
-    image: docker.io/eeacms/graylog2:1.3.4
+    image: docker.io/eeacms/graylog2:1.3.4.1
     hostname: graylogclient1.service
     env_file:
         - .secret.env
@@ -79,7 +79,7 @@ graylog-client-1:
 
 graylog-web:
     restart: always
-    image: docker.io/eeacms/graylog2:1.3.4
+    image: docker.io/eeacms/graylog2:1.3.4.1
     hostname: graylog.service
     environment:
         - ENABLED_SERVICES=graylog-web
