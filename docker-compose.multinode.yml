@@ -1,93 +1,17 @@
-loadbalancer:
-    restart: always
-    image: docker.io/nginx:alpine
-    ports:
-        - "1514:1514/tcp"
-        - "12201:12201/udp"
+data:
+    image: docker.io/busybox
     volumes:
-        - ./config/nginx.balancer.conf:/etc/nginx/nginx.conf:z
-        - /etc/localtime:/etc/localtime:ro
-    links:
-        - graylog-master
-        - graylog-client-1
+        - /data
+        - /logs
+    command: "/bin/true"
 
-fluentd:
-    restart: always
-    image: docker.io/eeacms/fluentd
-    links:
-        - loadbalancer
-    ports:
-        - "5140:5140/udp"
+setup:
+    image: docker.io/alpine
     volumes_from:
         - data
     volumes:
-        - ./config/fluent.multinode.conf:/etc/fluent/fluent.conf:z # Configuration
-        - /etc/localtime:/etc/localtime:ro
-
-graylog-master:
-    restart: always
-    image: docker.io/eeacms/graylog2:1.3.4.1
-    hostname: graylogmaster.service
-    env_file:
-        - .secret.env
-        - graylog.env
-    environment:
-        - ENABLED_SERVICES=graylog-server
-        - GRAYLOG_MASTER=true
-        - GRAYLOG_HOSTNAME=graylogmaster
-    links:
-        - "elasticsearch:elasticsearch.service"
-        - "mongodb:mongodb.service"
-        - "postfix:postfix.service"
-    volumes_from:
-        - data
-    volumes:
-        - ./config/graylogctl:/opt/graylog2-server/bin/graylogctl:z
-        - /etc/localtime:/etc/localtime:ro
-
-graylog-client-1:
-    restart: always
-    image: docker.io/eeacms/graylog2:1.3.4.1
-    hostname: graylogclient1.service
-    env_file:
-        - .secret.env
-        - graylog.env
-    environment:
-        - ENABLED_SERVICES=graylog-server
-        - GRAYLOG_MASTER=false
-        - GRAYLOG_HOSTNAME=graylogclient1
-    links:
-        - "elasticsearch:elasticsearch.service"
-        - "mongodb:mongodb.service"
-        - "postfix:postfix.service"
-    volumes_from:
-        - data
-    volumes:
-        - ./config/graylogctl:/opt/graylog2-server/bin/graylogctl:z
-        - /etc/localtime:/etc/localtime:ro
-
-graylog-web:
-    restart: always
-    image: docker.io/eeacms/graylog2:1.3.4.1
-    hostname: graylog.service
-    environment:
-        - ENABLED_SERVICES=graylog-web
-        - GRAYLOG_SERVER_URIS=http://graylogmaster:12900/,http://graylogclient1:12900/
-    env_file:
-        - .secret.env
-        - graylog.env
-    ports:
-        - "9000:9000"
-    links:
-        - "elasticsearch:elasticsearch.service"
-        - "mongodb:mongodb.service"
-        - "postfix:postfix.service"
-        - "graylog-master:graylogmaster.service"
-        - "graylog-client-1:graylogclient1.service"
-    volumes_from:
-        - data
-    volumes:
-        - /etc/localtime:/etc/localtime:ro
+        - ./setup/setup.sh:/setup.sh:z
+    command: /setup.sh
 
 postfix:
     restart: always
@@ -100,35 +24,78 @@ postfix:
 mongodb:
     image: docker.io/mongo:3.0.10
     restart: always
-    command: --smallfiles --quiet --logappend --logpath=/logs/mongodb/mongodb.log --dbpath=/data/mongodb
+    command: "--smallfiles --quiet --logappend --logpath=/logs/mongodb/mongodb.log --dbpath=/data/mongodb"
     volumes:
         - /etc/localtime:/etc/localtime:ro
     volumes_from:
         - data
 
 elasticsearch:
-    image: docker.io/elasticsearch:1.7.5
+    image: docker.io/elasticsearch:2.3.1
     restart: always
     volumes:
         - /etc/localtime:/etc/localtime:ro
-        - ./config/elasticsearch.yml:/etc/elasticsearch/elasticsearch.yml:z
-    volumes_from:
-        - data
-    command: -Des.cluster.name=graylog2 -Des.path.data=/data/elasticsearch -Des.path.logs=/logs/elasticsearch/
+    command: "elasticsearch -Des.cluster.name='graylog2' -Des.path.data=/data/elasticsearch -Des.path.logs=/logs/elasticsearch/"
     env_file:
         - elastic.env
-
-setup:
-    image: docker.io/alpine
     volumes_from:
         - data
-    volumes:
-        - ./setup/setup.sh:/setup.sh:z
-    command: /setup.sh
 
-data:
-    image: docker.io/busybox
+graylog-master:
+    restart: always
+    image: docker.io/eeacms/graylog2:2.0.2
+    env_file:
+        - .secret.env
+        - graylog.env
+    environment:
+        - ENABLED_SERVICES=web,server
+        - GRAYLOG_IS_MASTER=true
+    ports:
+        - "9000:9000"
+        - "12900:12900"
+    links:
+        - "elasticsearch:elasticsearch"
+        - "mongodb:mongodb"
+        - "postfix:postfix"
     volumes:
-        - /data
-        - /logs
-    command: "/bin/true"
+        - /etc/localtime:/etc/localtime:ro
+
+graylog-client-1:
+    restart: always
+    image: docker.io/eeacms/graylog2:2.0.2
+    env_file:
+        - .secret.env
+        - graylog.env
+    environment:
+        - GRAYLOG_IS_MASTER=false
+        - ENABLED_SERVICES=server
+    links:
+        - "elasticsearch:elasticsearch"
+        - "mongodb:mongodb"
+        - "postfix:postfix"
+    volumes:
+        - /etc/localtime:/etc/localtime:ro
+
+loadbalancer:
+    restart: always
+    image: docker.io/nginx:alpine
+    ports:
+        - "1514:1514/tcp"
+        - "12201:12201/udp"
+    volumes:
+        - ./config/nginx.balancer.conf:/etc/nginx/nginx.conf:z
+        - /etc/localtime:/etc/localtime:ro
+    links:
+        - "graylog-master:graylogmaster"
+        - "graylog-client-1:graylogclient1"
+
+fluentd:
+    restart: always
+    image: docker.io/eeacms/fluentd
+    links:
+        - loadbalancer
+    ports:
+        - "5140:5140/udp"
+    volumes:
+        - ./config/fluent.multinode.conf:/etc/fluent/fluent.conf:z # Configuration
+        - /etc/localtime:/etc/localtime:ro
