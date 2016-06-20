@@ -1,17 +1,14 @@
-data:
+mongo-data:
     image: docker.io/busybox
     volumes:
         - /data
-        - /logs
-    command: "/bin/true"
+    command: "chown -R 999: /data && /bin/true"
 
-setup:
-    image: docker.io/alpine
-    volumes_from:
-        - data
+es-data:
+    image: docker.io/busybox
     volumes:
-        - ./setup/setup.sh:/setup.sh:z
-    command: /setup.sh
+        - /data/elasticsearch
+    command: "chown -R 105:100 /data && /bin/true"
 
 postfix:
     restart: always
@@ -24,26 +21,27 @@ postfix:
 mongodb:
     image: docker.io/mongo:3.0.10
     restart: always
-    command: "--smallfiles --quiet --logappend --logpath=/logs/mongodb/mongodb.log --dbpath=/data/mongodb"
+    command: "--smallfiles --quiet --logappend --logpath=/data/mongodb.log --dbpath=/data/db"
     volumes:
         - /etc/localtime:/etc/localtime:ro
     volumes_from:
-        - data
+        - mongo-data
 
 elasticsearch:
     image: docker.io/elasticsearch:2.3.1
     restart: always
     volumes:
         - /etc/localtime:/etc/localtime:ro
-    command: "elasticsearch -Des.cluster.name='graylog2' -Des.path.data=/data/elasticsearch -Des.path.logs=/logs/elasticsearch/"
+    command: "elasticsearch -Des.cluster.name='graylog2' -Des.path.data=/data/elasticsearch -Des.path.logs=/data"
     env_file:
         - elastic.env
     volumes_from:
-        - data
+        - es-data
 
 graylog-master:
     restart: always
-    image: docker.io/eeacms/graylog2:2.0.2
+    #image: docker.io/eeacms/graylog2:2.0.2
+    image: lucas/graylog2
     env_file:
         - .secret.env
         - graylog.env
@@ -62,7 +60,8 @@ graylog-master:
 
 graylog-client-1:
     restart: always
-    image: docker.io/eeacms/graylog2:2.0.2
+    #image: docker.io/eeacms/graylog2:2.0.2
+    image: lucas/graylog2
     env_file:
         - .secret.env
         - graylog.env
