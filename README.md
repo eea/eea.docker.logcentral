@@ -89,8 +89,6 @@ links:
 ...
 ```
 
-Configure nginx loadbalancer
-
 Add new container under ```GRAYLOG_HOSTS``` var:
 
 ```
