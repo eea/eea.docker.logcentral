@@ -168,9 +168,10 @@ Note: These tracebacks will only be viewable in the graylog2 interface
 
 ## Ports forwarded on the local machine
 
-* 8000 - the web interface on the nginx server
-* 5140 - the Syslog UDP port listening for syslog messages
+* 9000 - the web interface on the nginx server
+* 5140, 1514 - the Syslog UDP, TCP port listening for syslog messages
 * 12201 - the GELF port listening for GELF messages
+* 12900 - Graylog api port
 
 ## Development tips
 
