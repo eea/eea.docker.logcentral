@@ -67,7 +67,7 @@ graylog-client-<progressive number>:
         - .secret.env
         - graylog.env
     environment:
-        - ENABLED_SERVICES=graylog-server
+        - ENABLED_SERVICES=server
         - GRAYLOG_MASTER=false
     links:
         - "elasticsearch:elasticsearch"
