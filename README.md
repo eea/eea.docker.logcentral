@@ -97,7 +97,7 @@ GRAYLOG_HOSTS=graylog-master,graylog-client-1,...,graylog-client-<progressive_nu
 ...
 ```
 
-__4__. After you can stop and restart services
+__3__. After you can stop and restart services
 
 ```
 docker-compose stop
