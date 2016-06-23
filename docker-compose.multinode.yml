@@ -84,14 +84,3 @@ loadbalancer:
     links:
         - "graylog-master"
         - "graylog-client-1"
-
-fluentd:
-    restart: always
-    image: docker.io/eeacms/fluentd:logcentral
-    links:
-        - loadbalancer
-    ports:
-        - "5140:5140/udp"
-    volumes:
-        - /etc/localtime:/etc/localtime:ro
-
