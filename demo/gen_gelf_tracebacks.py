@@ -11,7 +11,7 @@ import random
 import time
 
 if __name__ == '__main__':
-    gelf_handler = graypy.GELFHandler('localhost')
+    gelf_handler = graypy.GELFHandler('10.201.1.151')
     root_logger = logging.getLogger()
 
     # Add the GELF handler to the root loggers so all new loggers will
