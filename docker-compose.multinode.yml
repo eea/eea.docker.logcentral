@@ -80,6 +80,7 @@ loadbalancer:
         - "1514:1514/tcp"
         - "1514:1514/udp"
         - "12201:12201/udp"
+        - "12201:12201/tcp"
     volumes:
         - /etc/localtime:/etc/localtime:ro
     links:
