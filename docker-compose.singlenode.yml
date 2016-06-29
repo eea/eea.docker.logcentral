@@ -43,7 +43,7 @@ elasticsearch:
 
 graylog:
     restart: always
-    image: docker.io/eeacms/graylog2:2.0.2
+    image: docker.io/eeacms/graylog2:2.0.3
     environment:
         - ENABLED_SERVICES=web,server
         - GRAYLOG_IS_MASTER=true
