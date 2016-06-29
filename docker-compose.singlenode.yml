@@ -62,14 +62,3 @@ graylog:
         - "postfix:postfix"
     volumes:
         - /etc/localtime:/etc/localtime:ro
-
-fluentd:
-    restart: always
-    image: docker.io/eeacms/fluentd
-    links:
-        - graylog
-    ports:
-        - "5140:5140/udp"
-    volumes:
-        - ./config/fluent.conf:/etc/fluent/fluent.conf:z # Configuration
-        - /etc/localtime:/etc/localtime:ro
