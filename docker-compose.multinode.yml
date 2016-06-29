@@ -40,7 +40,7 @@ elasticsearch:
 
 graylog-master:
     restart: always
-    image: docker.io/eeacms/graylog2:2.0.2
+    image: docker.io/eeacms/graylog2:2.0.3
     env_file:
         - .secret.env
         - graylog.env
@@ -59,7 +59,7 @@ graylog-master:
 
 graylog-client-1:
     restart: always
-    image: docker.io/eeacms/graylog2:2.0.2
+    image: docker.io/eeacms/graylog2:2.0.3
     env_file:
         - .secret.env
         - graylog.env
