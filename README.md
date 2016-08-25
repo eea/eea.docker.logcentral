@@ -46,6 +46,13 @@ Verify that the app is running by doing ```docker-compose ps```
 Now you can access the graylog2 web interface on port 80 (default):
 * http://localhost/
  
+## Ports
+
+9000 - Graylog2 web interface
+12900 - Graylog2 server API
+12201 (tcp/udp) - GELF input
+1514 (tcp/udp) - syslog
+
 ## How to upgrade
 
 ```
