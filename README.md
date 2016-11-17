@@ -1,5 +1,6 @@
 # Docker-based centralized logging app based on Graylog2
 
+**DEPRECATED Attention** The deployment of EEA Logcentral has been moved to [EEA Rancher Catalog > templates](https://github.com/eea/eea.rancher.catalog/tree/master/templates). You can still use this repo has an example on how to deploy via docker-compose.
 
 ### Prerequisites
 
